@@ -3,6 +3,8 @@ const multer = require("multer");
 const cors = require("cors");
 const app = express();
 
+require("dotenv").config();
+
 app.use(cors());
 
 const port = 3000;
@@ -31,9 +33,7 @@ app.post("/upload", upload.single("file"), async (req, res) => {
 
   console.log(req.file);
 
-  const fileManager = new GoogleAIFileManager(
-    "AIzaSyDCHHKl05lTJWATcDfdaCO0Kfc0IIkTbRs"
-  );
+  const fileManager = new GoogleAIFileManager(process.env.GEMINI_API);
 
   const uploadResult = await fileManager.uploadFile(
     `./uploads/` + req.file.filename,
@@ -47,9 +47,7 @@ app.post("/upload", upload.single("file"), async (req, res) => {
     `Uploaded file ${uploadResult.file.displayName} as: ${uploadResult.file.uri}`
   );
 
-  const genAI = new GoogleGenerativeAI(
-    "AIzaSyDCHHKl05lTJWATcDfdaCO0Kfc0IIkTbRs"
-  );
+  const genAI = new GoogleGenerativeAI(process.env.GEMINI_API);
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
   const result = await model.generateContent([
     "Tell me about this image.",
