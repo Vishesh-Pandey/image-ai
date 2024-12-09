@@ -7,14 +7,12 @@ require("dotenv").config();
 
 app.use(cors());
 
-const port = 3000;
-
 const { GoogleAIFileManager } = require("@google/generative-ai/server");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "./uploads");
+    cb(null, "/tmp");
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
@@ -25,7 +23,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.send("Hello World! from image-ai");
 });
 
 app.post("/upload", upload.single("file"), async (req, res) => {
@@ -36,7 +34,7 @@ app.post("/upload", upload.single("file"), async (req, res) => {
   const fileManager = new GoogleAIFileManager(process.env.GEMINI_API);
 
   const uploadResult = await fileManager.uploadFile(
-    `./uploads/` + req.file.filename,
+    `/tmp/` + req.file.filename,
     {
       mimeType: req.file.mimetype,
       displayName: req.file.originalname,
@@ -62,6 +60,4 @@ app.post("/upload", upload.single("file"), async (req, res) => {
   res.send(result.response.text());
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
+module.exports = app;
