@@ -6,15 +6,31 @@ function App() {
   const [file, setFile] = useState(0);
   const [response, setResponse] = useState("");
 
-  const uploadFile = async (e) => {
+  const uploadFile = async () => {
+    try {
+      const response = await fetch(
+        "https://yy7hxj3veyehvuimd66jw42vuy0bvzmj.lambda-url.us-east-1.on.aws"
+      );
+      const data = await response.text();
+      console.log("Data is ", data);
+      setResponse(data);
+    } catch (error) {
+      console.log("Something went wrong ", error);
+    }
+
+    console.log("Fetching description");
     const formData = new FormData();
     formData.append("file", file);
     try {
-      const response = await fetch("http://localhost:3000/upload", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        "https://yy7hxj3veyehvuimd66jw42vuy0bvzmj.lambda-url.us-east-1.on.aws/upload",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
       const data = await response.text();
+      console.log("Data is ", data);
       setResponse(data);
     } catch (error) {
       console.log("Error is ", error);
