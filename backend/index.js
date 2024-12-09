@@ -7,6 +7,8 @@ require("dotenv").config();
 
 app.use(cors());
 
+app.options("*", cors()); // Handle preflight requests for all routes
+
 const { GoogleAIFileManager } = require("@google/generative-ai/server");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
@@ -21,6 +23,10 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
+
+app.get("/health", (req, res) => {
+  res.send("OK");
+});
 
 app.get("/", (req, res) => {
   res.send("Hello World! from image-ai");

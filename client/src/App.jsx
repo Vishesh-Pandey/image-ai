@@ -7,17 +7,6 @@ function App() {
   const [response, setResponse] = useState("");
 
   const uploadFile = async () => {
-    try {
-      const response = await fetch(
-        "https://yy7hxj3veyehvuimd66jw42vuy0bvzmj.lambda-url.us-east-1.on.aws"
-      );
-      const data = await response.text();
-      console.log("Data is ", data);
-      setResponse(data);
-    } catch (error) {
-      console.log("Something went wrong ", error);
-    }
-
     console.log("Fetching description");
     const formData = new FormData();
     formData.append("file", file);

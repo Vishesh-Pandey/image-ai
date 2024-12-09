@@ -19,11 +19,6 @@ export class CdkStack extends cdk.Stack {
 
     const functionUrl = dockerFunction.addFunctionUrl({
       authType: lambda.FunctionUrlAuthType.NONE,
-      cors: {
-        allowedMethods: [lambda.HttpMethod.ALL],
-        allowedHeaders: ["*"],
-        allowedOrigins: ["*"],
-      },
     });
 
     new cdk.CfnOutput(this, "FunctionUrlValue", {
