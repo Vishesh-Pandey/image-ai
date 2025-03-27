@@ -13,7 +13,7 @@ export class CdkStack extends cdk.Stack {
       {
         code: lambda.DockerImageCode.fromImageAsset("../backend"),
         memorySize: 1024,
-        timeout: cdk.Duration.seconds(10),
+        timeout: cdk.Duration.seconds(15),
       }
     );
 
